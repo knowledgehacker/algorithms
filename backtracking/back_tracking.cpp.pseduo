@@ -1,0 +1,27 @@
+
+bool finished = FALSE;
+void backtrack(int a[], int k, data input) {
+	/* candidates for next position */
+	int c[MAXCANDIDATES];
+	/* next position candidate count */
+	int ncandidates;
+
+	/* counter */
+	int i;
+	
+	/* found all solutions yet? */
+	if (is_a_solution(a,k,input))
+		process_solution(a,k,input);
+	else {
+		k = k+1;
+		construct_candidates(a,k,input,c,&ncandidates);
+		for (i=0; i<ncandidates; i++) {
+			a[k] = c[i];
+			make_move(a,k,input);
+			backtrack(a,k,input);
+			unmake_move(a,k,input);
+			if (finished) return;
+			/* terminate early */
+		}
+	}
+}
